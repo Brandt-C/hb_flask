@@ -34,5 +34,14 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.String(50))
 
+    def serialize(self):
+        return {"id": self.id,
+                'title': self.title,
+                'body': self.body,
+                'geotag': self.geotag,
+                'timestamp': self.timestamp,
+                'user_id' : self.user_id
+                }
+
 
 

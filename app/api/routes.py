@@ -3,7 +3,6 @@ from flask_cors import cross_origin
 from app.models import Post, User, db
 
 
-
 api = Blueprint('api', __name__, template_folder='apitemps', url_prefix='/api')
 
 
@@ -33,7 +32,7 @@ def login():
 def createPost():
     data = request.get_json()
     print(data)
-    if  not data['userid']:
+    if not data['userid']:
         return jsonify({'Post unsucessful': 'Please make sure you are logged in! post meets guidelines!'}), 500
     elif data['body'] == '' or data['title'] == '':
         return jsonify({'Post unsucessful': 'Please make sure your post meets guidelines!'}), 500
@@ -42,6 +41,13 @@ def createPost():
         db.session.add(newpost)
         db.session.commit()
         return 'Success, posted!', 201
+
+@api.route('/posts/<string:user_id>', methods=['GET'])
+def getPosts(user_id):
+    
+    posts = Post.query.filter_by(user_id=Post.user_id).order_by(Post.timestamp.desc()).first()
+    print(posts, type(posts))
+    return jsonify(posts.serialize())
 
 
     
