@@ -29,8 +29,15 @@ def login():
         return jsonify({'Login unsuccessful': 'Please try again.'})
 
     
-# @api.route('/<int:pid')
-# def createPost(pid):
-#     newpost = Post()
+@api.route('/new/post', methods=['POST'])
+def createPost():
+    data = request.get_json()
+    print(data)
+    newpost = Post(user_id=data['userid'], title=data['title'], body=data['body'])
+    db.session.add(newpost)
+    db.session.commit()
+    return 'Success!  Posted.', 201
 
+
+    
 
