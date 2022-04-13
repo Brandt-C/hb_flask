@@ -33,14 +33,15 @@ def login():
 def createPost():
     data = request.get_json()
     print(data)
-    if data['body'] == '' or data['userid'] == '' or data['title'] == '':
-        return jsonify({'Post unsucessful': 'Please make sure you are logged in post meets guidelines!'}), 500
-    
+    if  not data['userid']:
+        return jsonify({'Post unsucessful': 'Please make sure you are logged in! post meets guidelines!'}), 500
+    elif data['body'] == '' or data['title'] == '':
+        return jsonify({'Post unsucessful': 'Please make sure your post meets guidelines!'}), 500
     else:
         newpost = Post(user_id=data['userid'], title=data['title'], body=data['body'])
         db.session.add(newpost)
         db.session.commit()
-        return 'Success!  Posted.', 201
+        return 'Success, posted!', 201
 
 
     
