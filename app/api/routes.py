@@ -44,10 +44,15 @@ def createPost():
 
 @api.route('/posts/<string:user_id>', methods=['GET'])
 def getPosts(user_id):
-    
-    posts = Post.query.filter_by(user_id=Post.user_id).order_by(Post.timestamp.desc()).first()
+    posts = {'postdic': [p.serialize() for p in Post.query.filter_by(user_id=Post.user_id).order_by(Post.timestamp.desc()).all()]}
     print(posts, type(posts))
-    return jsonify(posts.serialize())
+    return jsonify(posts), 200
+    
+    
+    # 
+    # for p in range(len(posts)):
+    #     plist.append(p)
+    # print(plist)
 
 
     
